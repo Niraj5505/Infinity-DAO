@@ -1,0 +1,214 @@
+.aic-content {
+  margin-left: 250px;
+  min-height: 100vh;
+  padding: 1.5rem 2rem;
+  width: calc(100% - 250px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.aic-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.aic-header h1 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+/* Main Score Card */
+.aic-score-card {
+  width: 100%;
+  max-width: 800px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 0 40px rgba(168, 85, 247, 0.05);
+}
+
+.aic-score-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-purple), var(--accent-magenta));
+}
+
+.score-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+  letter-spacing: 0.5px;
+}
+
+.score-display-container {
+  position: relative;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.score-value {
+  font-size: 5rem;
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, white 0%, var(--text-muted) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
+}
+
+.score-max {
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-top: -0.5rem;
+}
+
+.claim-btn {
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+  color: white;
+  padding: 0.85rem 3rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 25px rgba(147, 51, 234, 0.3);
+  transition: all 0.3s ease;
+}
+
+.claim-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(147, 51, 234, 0.5);
+}
+
+.score-requirements {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 2rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.requirement-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.requirement-label {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.requirement-value {
+  color: var(--accent-light);
+  font-weight: 600;
+}
+
+.reward-toggle-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.reward-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.toggle-switch {
+  width: 50px;
+  height: 26px;
+  background-color: #1a1a1f;
+  border: 1px solid var(--border-color);
+  border-radius: 13px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.toggle-knob {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: left 0.3s ease;
+}
+
+/* Detailed Score Cards */
+.aic-detailed-scores {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.detailed-score-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.detailed-score-card:hover {
+  border-color: rgba(168, 85, 247, 0.4);
+  background-color: #1a1a1f;
+  transform: translateX(4px);
+}
+
+.score-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.score-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+}
+
+.score-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.score-value-pill {
+  background-color: rgba(147, 51, 234, 0.1);
+  border: 1px solid rgba(147, 51, 234, 0.2);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  color: var(--accent-light);
+  font-weight: 700;
+  font-size: 0.9rem;
+}

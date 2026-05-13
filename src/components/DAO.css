@@ -1,0 +1,196 @@
+.dao-content {
+  margin-left: 250px;
+  min-height: 100vh;
+  padding: 1.5rem 2rem;
+  width: calc(100% - 250px);
+}
+
+.dao-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.dao-header h1 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.dao-main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* Governance Header Card */
+.governance-card {
+  background: linear-gradient(135deg, #1a1a1f 0%, #0e0e11 100%);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.governance-card:hover {
+  border-color: rgba(168, 85, 247, 0.4);
+}
+
+.governance-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(147, 51, 234, 0.1) 0%, transparent 70%);
+  z-index: 0;
+}
+
+.gov-info h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gov-info p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  max-width: 450px;
+}
+
+.btn-new-proposal {
+  background: transparent;
+  border: 1px solid var(--accent-magenta);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-new-proposal:hover {
+  background: var(--accent-magenta);
+  box-shadow: 0 0 20px rgba(217, 70, 239, 0.3);
+}
+
+/* Proposals List Card */
+.proposals-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 2rem;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.proposals-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.proposal-loading {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  gap: 10px;
+}
+
+/* Right Side Cards */
+.dao-side-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.idl-power-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 1.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.idl-power-card:hover {
+  border-color: var(--accent-purple);
+}
+
+.power-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.power-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.power-subtext {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.dao-points {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.points-val {
+  color: var(--accent-light);
+  font-weight: 700;
+  margin-left: 5px;
+}
+
+.btn-add-power {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background-color: #1a1a1f;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-add-power:hover {
+  border-color: var(--accent-magenta);
+  color: var(--accent-magenta);
+}
+
+.past-proposals-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 2rem;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+}

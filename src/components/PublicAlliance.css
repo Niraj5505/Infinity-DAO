@@ -1,0 +1,281 @@
+.alliance-content {
+  margin-left: 250px;
+  min-height: 100vh;
+  padding: 1.5rem 2rem;
+  width: calc(100% - 250px);
+}
+
+.alliance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.alliance-header h1 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.alliance-section-title {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+}
+
+.alliance-grid-top {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.alliance-card-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.alliance-mini-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.2s;
+}
+
+.alliance-mini-card:hover {
+  transform: translateY(-4px);
+  background-color: #1a1a1f;
+  border-color: rgba(168, 85, 247, 0.4);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.alliance-mini-card:hover .card-icon-circle {
+  background: rgba(147, 51, 234, 0.2);
+  color: var(--accent-magenta);
+  transform: scale(1.05);
+}
+
+.card-icon-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(147, 51, 234, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-light);
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.card-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.referral-box {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.referral-input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: #0e0e11;
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+}
+
+.referral-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.referral-input-group:hover {
+  border-color: rgba(217, 70, 239, 0.3);
+}
+
+.copy-btn:hover {
+  color: var(--accent-light);
+  transform: scale(1.05);
+}
+
+.alliance-grid-rewards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.reward-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.reward-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  background-color: #1a1a1f;
+  border-color: var(--accent-magenta);
+  box-shadow: 0 15px 30px rgba(217, 70, 239, 0.15);
+}
+
+.reward-card:hover .reward-icon {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 15px rgba(217, 70, 239, 0.5));
+}
+
+.reward-icon {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-light);
+  filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.3));
+}
+
+.reward-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.reward-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+}
+
+.reward-unit {
+  font-size: 0.75rem;
+  color: var(--accent-magenta);
+  margin-left: 4px;
+}
+
+.alliance-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.progress-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.progress-card:hover {
+  border-color: rgba(168, 85, 247, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.rank-badge {
+  background: linear-gradient(90deg, var(--accent-purple), var(--accent-magenta));
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.progress-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.progress-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.progress-item-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.item-label {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.item-count {
+  color: var(--text-muted);
+}
+
+.progress-bar-bg {
+  height: 8px;
+  background-color: #0e0e11;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-purple), var(--accent-magenta));
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(217, 70, 239, 0.4);
+}
+
+.empty-referral-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  gap: 1rem;
+  padding: 4rem 2rem;
+}

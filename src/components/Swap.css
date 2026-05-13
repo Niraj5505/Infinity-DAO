@@ -1,0 +1,235 @@
+.swap-content {
+  margin-left: 250px;
+  min-height: 100vh;
+  padding: 1.5rem 2rem;
+  width: calc(100% - 250px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.swap-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4rem;
+}
+
+.swap-header h1 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.swap-container {
+  width: 100%;
+  max-width: 480px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 1.5rem;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.swap-container::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+  border-radius: 26px;
+  z-index: -1;
+  opacity: 0.15;
+}
+
+.swap-box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 0 0.5rem;
+}
+
+.swap-box-header h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.settings-btn {
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.settings-btn:hover {
+  color: var(--text-primary);
+}
+
+.token-input-group {
+  background-color: #0e0e11;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  transition: border-color 0.2s;
+}
+
+.token-input-group:focus-within {
+  border-color: rgba(217, 70, 239, 0.4);
+}
+
+.input-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.input-label {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.balance-label {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.input-bottom {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.amount-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  outline: none;
+  width: 100%;
+}
+
+.amount-input::placeholder {
+  color: var(--text-muted);
+}
+
+.token-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #1a1a1f;
+  padding: 0.4rem 0.75rem;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.token-selector:hover {
+  background-color: #24242b;
+  border-color: var(--border-color);
+}
+
+.token-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.token-symbol {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.swap-divider {
+  display: flex;
+  justify-content: center;
+  margin: -0.75rem 0;
+  position: relative;
+  z-index: 2;
+}
+
+.switch-btn {
+  background-color: #1a1a1f;
+  border: 4px solid var(--bg-card);
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-magenta);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.switch-btn:hover {
+  transform: rotate(180deg);
+  background-color: #24242b;
+}
+
+.swap-info {
+  padding: 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.info-label {
+  color: var(--text-muted);
+}
+
+.info-value {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.btn-swap-execute {
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+  color: white;
+  padding: 1rem;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(147, 51, 234, 0.3);
+}
+
+.btn-swap-execute:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(147, 51, 234, 0.5);
+}
+
+.btn-swap-execute:active {
+  transform: translateY(0);
+}
+
+.swap-bg-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(147, 51, 234, 0.08) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+}
