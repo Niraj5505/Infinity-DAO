@@ -43,7 +43,7 @@ const Swap = () => {
       
       <header className="swap-header">
         <h1>Infinity Swap</h1>
-        <button className="btn-connect" style={{background: 'var(--accent-purple)', color: '#111'}}>Connect</button>
+        <button className="btn-connect">Connect</button>
       </header>
 
       <div className="swap-container">

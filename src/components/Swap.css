@@ -1,12 +1,16 @@
 .swap-content {
-  margin-left: 250px;
   min-height: 100vh;
   padding: 1.5rem 2rem;
-  width: calc(100% - 250px);
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+}
+
+@media (max-width: 992px) {
+  .swap-content {
+    padding: 6rem 1rem 2rem;
+  }
 }
 
 .swap-header {
@@ -15,6 +19,15 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 4rem;
+}
+
+@media (max-width: 640px) {
+  .swap-header {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
 }
 
 .swap-header h1 {
@@ -33,6 +46,16 @@
   position: relative;
   z-index: 1;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 480px) {
+  .swap-container {
+    padding: 1.25rem;
+  }
+  
+  .amount-input {
+    font-size: 1.25rem;
+  }
 }
 
 .swap-container::before {

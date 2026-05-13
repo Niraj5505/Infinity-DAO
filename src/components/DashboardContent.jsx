@@ -37,7 +37,7 @@ const DashboardContent = () => {
     <main className="dashboard-content animate-up">
       <header className="dashboard-header">
         <h1>Infinity Dashboard</h1>
-        <button className="btn-connect" style={{background: 'var(--accent-purple)', color: '#111'}}>Connect</button>
+        <button className="btn-connect">Connect</button>
       </header>
 
       <div className="dashboard-banners">

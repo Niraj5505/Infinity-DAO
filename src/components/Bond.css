@@ -1,9 +1,8 @@
 .bond-content {
-  margin-left: 250px;
   min-height: 100vh;
   padding: 1.5rem 2rem;
-  width: calc(100% - 250px);
   position: relative;
+  transition: all 0.3s ease;
 }
 
 .bond-content::before {
@@ -28,6 +27,14 @@
 .bond-header h1 {
   font-size: 1.5rem;
   font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .bond-header {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+  }
 }
 
 .timer-section {
@@ -116,6 +123,18 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+}
+
+@media (max-width: 1200px) {
+  .bond-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .bond-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .bond-card {
@@ -241,7 +260,14 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 480px) {
+  .balance-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
 }
 
 .idl-value-display {

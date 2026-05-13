@@ -1,10 +1,14 @@
 .dashboard-content {
-  margin-left: 250px;
   min-height: 100vh;
   padding: 1.5rem 2rem;
-  width: calc(100% - 250px);
   position: relative;
   overflow-x: hidden;
+}
+
+@media (max-width: 992px) {
+  .dashboard-content {
+    padding: 6rem 1rem 2rem;
+  }
 }
 
 /* Background Blobs */
@@ -33,11 +37,25 @@
   letter-spacing: -0.5px;
 }
 
+@media (max-width: 640px) {
+  .dashboard-header {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+  }
+}
+
 .dashboard-banners {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
   margin-bottom: 2.5rem;
+}
+
+@media (max-width: 1100px) {
+  .dashboard-banners {
+    grid-template-columns: 1fr;
+  }
 }
 
 .banner {
@@ -115,6 +133,18 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+}
+
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .stat-card {

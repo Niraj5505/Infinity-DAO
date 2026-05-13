@@ -1,8 +1,13 @@
 .dao-content {
-  margin-left: 250px;
   min-height: 100vh;
   padding: 1.5rem 2rem;
-  width: calc(100% - 250px);
+  position: relative;
+}
+
+@media (max-width: 992px) {
+  .dao-content {
+    padding: 6rem 1rem 2rem;
+  }
 }
 
 .dao-header {
@@ -17,11 +22,26 @@
   font-weight: 600;
 }
 
+@media (max-width: 640px) {
+  .dao-header {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+}
+
 .dao-main-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 1.5rem;
   align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .dao-main-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Governance Header Card */
@@ -37,6 +57,20 @@
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
+}
+
+@media (max-width: 640px) {
+  .governance-card {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+  
+  .gov-info h2 {
+    justify-content: center;
+    font-size: 1.5rem;
+  }
 }
 
 .governance-card:hover {

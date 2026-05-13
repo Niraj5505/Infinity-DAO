@@ -1,9 +1,8 @@
 .stake-content {
-  margin-left: 250px;
   min-height: 100vh;
   padding: 1.5rem 2rem;
-  width: calc(100% - 250px);
   position: relative;
+  transition: all 0.3s ease;
 }
 
 .stake-content::before {
@@ -28,6 +27,14 @@
 .stake-header h1 {
   font-size: 1.5rem;
   font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .stake-header {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+  }
 }
 
 .timer-section {
@@ -118,6 +125,18 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+}
+
+@media (max-width: 1200px) {
+  .stake-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .stake-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .stake-card {
@@ -225,16 +244,17 @@
 .modal-overlay {
   position: fixed;
   top: 0;
-  left: 250px;
-  width: calc(100% - 250px);
+  left: 0;
+  width: 100%;
   height: 100vh;
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   z-index: 1000;
-  padding: 1rem;
+  padding: 2rem 1rem;
+  overflow-y: auto;
 }
 
 .modal-container {
@@ -242,14 +262,15 @@
   border: 1px solid var(--border-color);
   border-radius: 32px;
   width: 100%;
-  max-width: 600px;
+  max-width: 500px;
   position: relative;
   overflow: hidden;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  margin: auto;
 }
 
 .modal-header {
-  padding: 1.5rem 2rem;
+  padding: 1.25rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -283,12 +304,12 @@
 }
 
 .modal-body {
-  padding: 2rem;
+  padding: 1.5rem;
 }
 
 .balance-container {
   position: relative;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   padding: 0.5rem 1.5rem;
   display: flex;
   align-items: center;
@@ -320,22 +341,28 @@
 .modal-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 480px) {
+  .modal-columns {
+    grid-template-columns: 1fr;
+  }
 }
 
 .modal-col-title {
   font-size: 0.85rem;
   color: white;
   font-weight: 600;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.75rem;
 }
 
 .referral-box {
   background: #111114;
   border: 1px solid var(--border-color);
   border-radius: 20px;
-  padding: 1.25rem;
+  padding: 1rem;
   height: 100%;
 }
 
@@ -413,11 +440,11 @@
   background: #111114;
   border: 1px solid var(--border-color);
   border-radius: 12px;
-  padding: 0.75rem 1rem;
+  padding: 0.6rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
 }
 
 .amount-input-wrapper input {
@@ -474,7 +501,7 @@
 }
 
 .modal-footer {
-  padding: 2rem;
+  padding: 1.25rem 1.5rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
@@ -484,7 +511,7 @@
 .btn-modal-process {
   background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
   color: white;
-  padding: 0.9rem;
+  padding: 0.75rem;
   border-radius: 12px;
   font-weight: 800;
   font-size: 0.95rem;
@@ -495,7 +522,7 @@
   background: #111114;
   border: 1px solid var(--border-color);
   color: white;
-  padding: 0.9rem;
+  padding: 0.75rem;
   border-radius: 12px;
   font-weight: 800;
   font-size: 0.95rem;

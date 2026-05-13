@@ -48,7 +48,8 @@ const BondModal = ({ isOpen, onClose, planName }) => {
               </div>
             </div>
             <div className="balance-container" style={{ marginBottom: 0 }}>
-              <div className="balance-text" style={{ marginLeft: '1rem' }}>
+              <div className="balance-accent"></div>
+              <div className="balance-text">
                 USDT Available Balance: <span className="balance-val">0.000 USDT</span>
               </div>
             </div>
@@ -163,7 +164,7 @@ const Bond = () => {
     <main className="bond-content animate-up">
       <header className="bond-header">
         <h1>Infinity Bond</h1>
-        <button className="btn-connect" style={{background: 'var(--accent-purple)', color: '#111'}}>Connect</button>
+        <button className="btn-connect">Connect</button>
       </header>
 
       <div className="timer-section">

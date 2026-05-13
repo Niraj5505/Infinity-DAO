@@ -1,8 +1,13 @@
 .alliance-content {
-  margin-left: 250px;
   min-height: 100vh;
   padding: 1.5rem 2rem;
-  width: calc(100% - 250px);
+  position: relative;
+}
+
+@media (max-width: 992px) {
+  .alliance-content {
+    padding: 6rem 1rem 2rem;
+  }
 }
 
 .alliance-header {
@@ -15,6 +20,15 @@
 .alliance-header h1 {
   font-size: 1.3rem;
   font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .alliance-header {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
 }
 
 .alliance-section-title {
@@ -31,6 +45,18 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   margin-bottom: 2rem;
+}
+
+@media (max-width: 1200px) {
+  .alliance-grid-top {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .alliance-grid-top {
+    grid-template-columns: 1fr;
+  }
 }
 
 .alliance-card-group {
@@ -136,6 +162,18 @@
   margin-bottom: 2rem;
 }
 
+@media (max-width: 1200px) {
+  .alliance-grid-rewards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .alliance-grid-rewards {
+    grid-template-columns: 1fr;
+  }
+}
+
 .reward-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -195,6 +233,12 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
+}
+
+@media (max-width: 1100px) {
+  .alliance-bottom-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .progress-card {

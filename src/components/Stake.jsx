@@ -158,7 +158,7 @@ const Stake = () => {
     <main className="stake-content animate-up">
       <header className="stake-header">
         <h1>Velocity Staking</h1>
-        <button className="btn-connect" style={{background: 'var(--accent-purple)', color: '#111'}}>Connect</button>
+        <button className="btn-connect">Connect</button>
       </header>
 
       <div className="timer-section">

@@ -86,48 +86,48 @@ const InfinityLogo = ({ size = 28 }) => (
   </svg>
 );
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, toggleSidebar }) => {
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isOpen ? 'active' : ''}`}>
       <div className="sidebar-brand">
         <InfinityLogo />
         <span className="text-gradient" style={{ letterSpacing: '1px' }}>INFINITY DAO</span>
       </div>
 
       <nav className="sidebar-nav">
-        <NavLink to="/" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} end>
+        <NavLink to="/" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()} end>
           <LayoutDashboard size={20} className="nav-icon" />
           <span>Dashboard</span>
         </NavLink>
-        <NavLink to="/calculator" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`}>
+        <NavLink to="/calculator" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
           <Calculator size={20} className="nav-icon" />
           <span>Calculator</span>
         </NavLink>
-        <NavLink to="/stake" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`}>
+        <NavLink to="/stake" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
           <Layers size={20} className="nav-icon" />
           <span>Stake</span>
         </NavLink>
-        <NavLink to="/bond" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`}>
+        <NavLink to="/bond" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
           <Shield size={20} className="nav-icon" />
           <span>Bond</span>
         </NavLink>
-        <NavLink to="/swap" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`}>
+        <NavLink to="/swap" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
           <ArrowLeftRight size={20} className="nav-icon" />
           <span>Swap</span>
         </NavLink>
-        <NavLink to="/public-alliance" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`}>
+        <NavLink to="/public-alliance" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
           <Users size={20} className="nav-icon" />
           <span>Public Alliance</span>
         </NavLink>
-        <NavLink to="/my-account" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`}>
+        <NavLink to="/my-account" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
           <UserCircle size={20} className="nav-icon" />
           <span>My Account</span>
         </NavLink>
-        <NavLink to="/aic" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`}>
+        <NavLink to="/aic" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
           <Cpu size={20} className="nav-icon" />
           <span>AIC</span>
         </NavLink>
-        <NavLink to="/dao" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`}>
+        <NavLink to="/dao" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
           <Gavel size={20} className="nav-icon" />
           <span>DAO</span>
         </NavLink>
