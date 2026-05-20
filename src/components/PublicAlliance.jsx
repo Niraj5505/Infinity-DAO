@@ -12,6 +12,7 @@ import {
   Crown
 } from 'lucide-react';
 import './PublicAlliance.css';
+import { useWeb3 } from '../web3/Web3Context';
 
 const MiniCard = ({ icon: Icon, label, value }) => (
   <div className="alliance-mini-card">
@@ -50,25 +51,43 @@ const ProgressBar = ({ label, current, target, percent }) => (
 );
 
 const PublicAlliance = () => {
+  const { isConnected, address, connectWallet, disconnectWallet, formatAddress } = useWeb3();
+
+  const handleWalletClick = () => {
+    if (isConnected) {
+      if (window.confirm('Do you want to disconnect your wallet?')) {
+        disconnectWallet();
+      }
+    } else {
+      connectWallet();
+    }
+  };
+
   return (
     <main className="alliance-content animate-up">
       <header className="alliance-header">
         <h1>Public Alliance</h1>
-        <button className="btn-connect" style={{background: 'var(--accent-purple)', color: '#111'}}>Connect</button>
+        <button 
+          className="btn-connect" 
+          style={{background: 'var(--accent-purple)', color: '#111'}}
+          onClick={handleWalletClick}
+        >
+          {isConnected ? formatAddress(address) : 'Connect'}
+        </button>
       </header>
 
       <div className="alliance-grid-top">
         <div className="alliance-card-group">
           <h2 className="alliance-section-title">Team Overview</h2>
-          <MiniCard icon={Users} label="Total Members" value="0" />
-          <MiniCard icon={BarChart3} label="Team Business" value="0.000" />
+          <MiniCard icon={Users} label="Total Members" value={isConnected ? "12" : "0"} />
+          <MiniCard icon={BarChart3} label="Team Business" value={isConnected ? "25,000.000" : "0.000"} />
         </div>
 
         <div className="alliance-card-group">
           <h2 className="alliance-section-title">Direct Referral</h2>
-          <MiniCard icon={UserPlus} label="Direct Referrals" value="0" />
-          <MiniCard icon={Zap} label="Active Direct Referrals" value="0" />
-          <MiniCard icon={Target} label="Direct Business" value="0.000" />
+          <MiniCard icon={UserPlus} label="Direct Referrals" value={isConnected ? "3" : "0"} />
+          <MiniCard icon={Zap} label="Active Direct Referrals" value={isConnected ? "3" : "0"} />
+          <MiniCard icon={Target} label="Direct Business" value={isConnected ? "6,500.000" : "0.000"} />
         </div>
 
         <div className="alliance-card-group">
@@ -90,35 +109,42 @@ const PublicAlliance = () => {
 
       <h2 className="alliance-section-title">Velocity Expansion Rewards</h2>
       <div className="alliance-grid-rewards">
-        <RewardCard icon={Trophy} label="Direct Acceleration Reward" value="0.000" />
-        <RewardCard icon={Zap} label="Expansion Tier Reward" value="N/A" unit="" />
-        <RewardCard icon={ShieldCheck} label="Expansion Booster Reward" value="0.000" />
-        <RewardCard icon={Target} label="Indirect Expansion Reward" value="0.000" />
-        <RewardCard icon={Crown} label="Rank Achievement Reward" value="0.000" />
-        <RewardCard icon={BarChart3} label="Expansion Pool Reward" value="0.000" />
-        <RewardCard icon={Zap} label="Momentum Pool Reward" value="0.000" />
-        <RewardCard icon={Target} label="Profit Sync Reward" value="0.000" />
+        <RewardCard icon={Trophy} label="Direct Acceleration Reward" value={isConnected ? "450.000" : "0.000"} />
+        <RewardCard icon={Zap} label="Expansion Tier Reward" value={isConnected ? "Tier 2" : "N/A"} unit="" />
+        <RewardCard icon={ShieldCheck} label="Expansion Booster Reward" value={isConnected ? "120.000" : "0.000"} />
+        <RewardCard icon={Target} label="Indirect Expansion Reward" value={isConnected ? "890.000" : "0.000"} />
+        <RewardCard icon={Crown} label="Rank Achievement Reward" value={isConnected ? "250.000" : "0.000"} />
+        <RewardCard icon={BarChart3} label="Expansion Pool Reward" value={isConnected ? "75.000" : "0.000"} />
+        <RewardCard icon={Zap} label="Momentum Pool Reward" value={isConnected ? "35.000" : "0.000"} />
+        <RewardCard icon={Target} label="Profit Sync Reward" value={isConnected ? "15.000" : "0.000"} />
       </div>
 
       <div className="alliance-bottom-grid">
         <div className="progress-card">
           <div className="progress-header">
             <h2 className="section-title">Next Rank Progress</h2>
-            <span className="rank-badge">Level 1 - Starter</span>
+            <span className="rank-badge">{isConnected ? "Level 3 - Surge" : "Level 1 - Starter"}</span>
           </div>
           <div className="progress-list">
-            <ProgressBar label="Personal Stake" current="0" target="1000" percent={0} />
-            <ProgressBar label="Team Business" current="0" target="10000" percent={0} />
-            <ProgressBar label="Strong Leg Business" current="0" target="5000" percent={0} />
-            <ProgressBar label="Other Legs Business" current="0" target="5000" percent={0} />
-            <ProgressBar label="Direct Active Referrals" current="0" target="3" percent={0} />
+            <ProgressBar label="Personal Stake" current={isConnected ? "2500" : "0"} target="1000" percent={isConnected ? 100 : 0} />
+            <ProgressBar label="Team Business" current={isConnected ? "25000" : "0"} target="10000" percent={isConnected ? 100 : 0} />
+            <ProgressBar label="Strong Leg Business" current={isConnected ? "15000" : "0"} target="5000" percent={isConnected ? 100 : 0} />
+            <ProgressBar label="Other Legs Business" current={isConnected ? "10000" : "0"} target="5000" percent={isConnected ? 100 : 0} />
+            <ProgressBar label="Direct Active Referrals" current={isConnected ? "3" : "0"} target="3" percent={isConnected ? 100 : 0} />
           </div>
         </div>
 
         <div className="empty-referral-card">
           <Users size={48} strokeWidth={1} />
-          <span>No direct referrals found.</span>
-          <button className="btn-secondary" style={{fontSize: '0.85rem'}}>Invite Friends</button>
+          <span>{isConnected ? "Invite code active" : "No direct referrals found."}</span>
+          <button className="btn-secondary" style={{fontSize: '0.85rem'}} onClick={() => {
+            if (isConnected) {
+              navigator.clipboard.writeText(`https://infinitydao.ai/ref/${address}`);
+              alert('Copied invite link!');
+            } else {
+              alert('Please connect your wallet first.');
+            }
+          }}>Invite Friends</button>
         </div>
       </div>
     </main>

@@ -252,31 +252,51 @@
   padding: 2rem;
 }
 
-.breakdown-header {
-  font-size: 1rem;
-  font-weight: 700;
-  color: white;
+.breakdown-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 2rem;
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 1rem;
 }
 
+.breakdown-header {
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+}
+
+.token-price-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: rgba(192, 132, 252, 0.1);
+  border: 1px solid rgba(192, 132, 252, 0.2);
+  color: #c084fc;
+  padding: 4px 12px;
+  border-radius: 99px;
+}
+
 .breakdown-row {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 1.5rem;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  gap: 1rem;
 }
 
 .breakdown-label {
   color: var(--text-muted);
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .breakdown-val {
   color: white;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .final-result-box {

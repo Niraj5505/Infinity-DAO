@@ -3,11 +3,14 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
+import { Web3Provider } from './web3/Web3Context'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <Web3Provider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Web3Provider>
   </StrictMode>,
 )

@@ -10,13 +10,23 @@ import PublicAlliance from './components/PublicAlliance';
 import MyAccount from './components/MyAccount';
 import AIC from './components/AIC';
 import DAO from './components/DAO';
+import Auth from './components/Auth';
 import { Menu, X } from 'lucide-react';
 import './App.css';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('inf_dao_token'));
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  const handleAuthSuccess = (user) => {
+    setIsAuthenticated(true);
+  };
+
+  if (!isAuthenticated) {
+    return <Auth onAuthSuccess={handleAuthSuccess} />;
+  }
 
   return (
     <div className="app-layout">

@@ -9,9 +9,11 @@ import {
   Coins, 
   Wallet,
   ArrowUpRight,
-  ArrowDownRight
+  ArrowDownRight,
+  Database
 } from 'lucide-react';
 import './DashboardContent.css';
+import { useWeb3 } from '../web3/Web3Context';
 
 const StatCard = ({ icon: Icon, label, value, trend, trendType }) => (
   <div className="stat-card">
@@ -33,11 +35,67 @@ const StatCard = ({ icon: Icon, label, value, trend, trendType }) => (
 );
 
 const DashboardContent = () => {
+  const { isConnected, address, connectWallet, disconnectWallet, formatAddress, dbStatus } = useWeb3();
+
+  const handleWalletClick = () => {
+    if (isConnected) {
+      if (window.confirm('Do you want to disconnect your wallet?')) {
+        disconnectWallet();
+      }
+    } else {
+      connectWallet();
+    }
+  };
+
+  const copyReferral = () => {
+    const link = `https://infinitydao.ai/ref/${address || '0x71C7656EC7ab88b098defB751B7401B5f6d2bE23'}`;
+    navigator.clipboard.writeText(link);
+    alert('Referral link copied to clipboard!');
+  };
+
   return (
     <main className="dashboard-content animate-up">
-      <header className="dashboard-header">
-        <h1>Infinity Dashboard</h1>
-        <button className="btn-connect">Connect</button>
+      <header className="dashboard-header" style={{ alignItems: 'flex-start' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <h1 style={{ margin: 0 }}>Infinity Dashboard</h1>
+          {/* MongoDB Connection Status Indicator */}
+          <div className="mongodb-badge" style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '8px', 
+            background: 'rgba(255, 255, 255, 0.02)', 
+            border: '1px solid rgba(255, 255, 255, 0.05)', 
+            padding: '5px 12px', 
+            borderRadius: '20px',
+            fontSize: '0.75rem',
+            width: 'fit-content',
+            color: 'var(--text-secondary)'
+          }}>
+            <Database size={12} style={{ color: dbStatus.connected ? '#10b981' : '#f59e0b' }} />
+            <span>DB Status:</span>
+            <span style={{ 
+              fontWeight: '700', 
+              color: dbStatus.connected ? '#10b981' : '#f59e0b',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '5px'
+            }}>
+              {dbStatus.connected ? 'MongoDB Active' : 'MongoDB Sandbox'}
+              <span className="db-glow-dot" style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: dbStatus.connected ? '#10b981' : '#f59e0b',
+                boxShadow: dbStatus.connected ? '0 0 8px #10b981' : '0 0 8px #f59e0b',
+                display: 'inline-block'
+              }} />
+            </span>
+            <span style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>| API URI: {dbStatus.uri}</span>
+          </div>
+        </div>
+        <button className="btn-connect" onClick={handleWalletClick}>
+          {isConnected ? formatAddress(address) : 'Connect'}
+        </button>
       </header>
 
       <div className="dashboard-banners">
@@ -47,8 +105,8 @@ const DashboardContent = () => {
             <p className="banner-desc">Invite your friends to Infinity DAO and earn exclusive rewards.</p>
           </div>
           <div className="banner-action">
-            <div className="referral-input-box">
-              <span>https://infinitydao.ai/ref/0x71...</span>
+            <div className="referral-input-box" onClick={copyReferral} style={{ cursor: 'pointer' }}>
+              <span>{`https://infinitydao.ai/ref/${isConnected ? formatAddress(address) : '0x71...d2bE'}`}</span>
               <button className="copy-btn" style={{color: 'var(--accent-magenta)', fontWeight: '700'}}>COPY</button>
             </div>
           </div>
