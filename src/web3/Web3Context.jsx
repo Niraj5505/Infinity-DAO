@@ -148,14 +148,8 @@ export const Web3Provider = ({ children }) => {
   const connectWallet = async () => {
     // 1. Check if MetaMask (or any injected wallet) is installed
     if (typeof window === 'undefined' || !window.ethereum) {
-      console.warn("MetaMask not detected, initiating sandbox developer connection.");
-      const mockAddr = '0x71C7656EC7ab88b098defB751B7401B5f6d2bE23';
-      setIsConnected(true);
-      setAddress(mockAddr);
-      localStorage.setItem('inf_dao_addr', mockAddr);
-      localStorage.setItem('inf_dao_connected', 'true');
-      await loadBalancesAndSync(mockAddr);
-      return mockAddr;
+      alert("MetaMask not detected! Please install the MetaMask browser extension or open the site in a Web3-enabled mobile browser to connect your wallet.");
+      return false;
     }
 
     try {
@@ -182,15 +176,8 @@ export const Web3Provider = ({ children }) => {
       
     } catch (error) {
       console.error("User rejected the request or an error occurred", error);
-      
-      // Secondary fallback to support testing & developer flow
-      const fallbackAddr = '0x71C7656EC7ab88b098defB751B7401B5f6d2bE23';
-      setIsConnected(true);
-      setAddress(fallbackAddr);
-      localStorage.setItem('inf_dao_addr', fallbackAddr);
-      localStorage.setItem('inf_dao_connected', 'true');
-      await loadBalancesAndSync(fallbackAddr);
-      return fallbackAddr;
+      alert("Wallet connection failed: " + (error.message || "User rejected the request."));
+      return false;
     }
   };
 
