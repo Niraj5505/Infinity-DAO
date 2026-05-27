@@ -307,7 +307,7 @@ const DashboardContent = ({ isAuthenticated, currentUser, setShowAuthModal, hand
   };
 
   const copyReferral = () => {
-    const link = `https://infinitydao.ai/ref/${address || '0x71C7656EC7ab88b098defB751B7401B5f6d2bE23'}`;
+    const link = `https://infinity-dao.vercel.app/ref/${address || '0x71C7656EC7ab88b098defB751B7401B5f6d2bE23'}`;
     navigator.clipboard.writeText(link);
     alert('Referral link copied to clipboard!');
   };
@@ -382,7 +382,7 @@ const DashboardContent = ({ isAuthenticated, currentUser, setShowAuthModal, hand
           </div>
           <div className="banner-action">
             <div className="referral-input-box" onClick={copyReferral} style={{ cursor: 'pointer' }}>
-              <span>{`https://infinitydao.ai/ref/${isConnected ? formatAddress(address) : '0x71...d2bE'}`}</span>
+              <span>{`https://infinity-dao.vercel.app/ref/${isConnected ? formatAddress(address) : '0x71...d2bE'}`}</span>
               <button className="copy-btn" style={{color: 'var(--accent-magenta)', fontWeight: '700'}}>COPY</button>
             </div>
           </div>

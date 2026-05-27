@@ -107,12 +107,12 @@ const StakeModal = ({ isOpen, onClose, planName }) => {
                 <div className="referral-link-display">
                   <div className="link-accent"></div>
                   <span className="link-placeholder" style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                    {isConnected ? `https://infinitydao.ai/ref/${formatAddress(address)}` : 'Wallet not connected'}
+                    {isConnected ? `https://infinity-dao.vercel.app/ref/${formatAddress(address)}` : 'Wallet not connected'}
                   </span>
                 </div>
                 <button className="btn-referral-copy" onClick={() => {
                   if (isConnected) {
-                    navigator.clipboard.writeText(`https://infinitydao.ai/ref/${address}`);
+                    navigator.clipboard.writeText(`https://infinity-dao.vercel.app/ref/${address}`);
                     alert('Referral link copied!');
                   } else {
                     alert('Please connect your wallet first.');

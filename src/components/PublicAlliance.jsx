@@ -139,7 +139,7 @@ const PublicAlliance = () => {
           <span>{isConnected ? "Invite code active" : "No direct referrals found."}</span>
           <button className="btn-secondary" style={{fontSize: '0.85rem'}} onClick={() => {
             if (isConnected) {
-              navigator.clipboard.writeText(`https://infinitydao.ai/ref/${address}`);
+              navigator.clipboard.writeText(`https://infinity-dao.vercel.app/ref/${address}`);
               alert('Copied invite link!');
             } else {
               alert('Please connect your wallet first.');
