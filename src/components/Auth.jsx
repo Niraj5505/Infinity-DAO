@@ -93,32 +93,59 @@ const Auth = ({ onAuthSuccess, initialMode = true, isModal = false, onClose }) =
               throw new Error('Email is already registered.');
             }
             
-            const newUserAddress = walletAddress.trim().toLowerCase() || '0x' + Math.random().toString(16).substring(2, 42);
-            const newUser = {
-              id: 'mock_usr_' + Math.random().toString(36).substring(2, 11).toUpperCase(),
-              email: normalizedEmail,
-              password: password,
-              walletAddress: newUserAddress,
-              fullName: fullName || 'DAO Member',
-              phone: phone || '',
-              sponsorId: sponsorId || ''
-            };
+            const normalizedAddr = walletAddress.trim().toLowerCase();
+            let existingWalletUser = null;
+            if (normalizedAddr) {
+              existingWalletUser = mockUsers.find(u => u.walletAddress === normalizedAddr);
+              if (existingWalletUser && existingWalletUser.email) {
+                throw new Error('Wallet address is already registered.');
+              }
+            }
             
-            mockUsers.push(newUser);
-            localStorage.setItem('inf_dao_mock_users', JSON.stringify(mockUsers));
-            
-            const registeredUser = {
-              id: newUser.id,
-              email: newUser.email,
-              walletAddress: newUser.walletAddress
-            };
+            const newUserAddress = normalizedAddr || '0x' + Math.random().toString(16).substring(2, 42);
+            let registeredUser;
+
+            if (existingWalletUser) {
+              // Update pre-existing wallet-only mock user
+              existingWalletUser.email = normalizedEmail;
+              existingWalletUser.password = password;
+              existingWalletUser.fullName = fullName || 'DAO Member';
+              existingWalletUser.phone = phone || '';
+              existingWalletUser.sponsorId = sponsorId || '';
+              localStorage.setItem('inf_dao_mock_users', JSON.stringify(mockUsers));
+
+              registeredUser = {
+                id: existingWalletUser.id,
+                email: existingWalletUser.email,
+                walletAddress: existingWalletUser.walletAddress
+              };
+            } else {
+              const newUser = {
+                id: 'mock_usr_' + Math.random().toString(36).substring(2, 11).toUpperCase(),
+                email: normalizedEmail,
+                password: password,
+                walletAddress: newUserAddress,
+                fullName: fullName || 'DAO Member',
+                phone: phone || '',
+                sponsorId: sponsorId || ''
+              };
+              
+              mockUsers.push(newUser);
+              localStorage.setItem('inf_dao_mock_users', JSON.stringify(mockUsers));
+
+              registeredUser = {
+                id: newUser.id,
+                email: newUser.email,
+                walletAddress: newUser.walletAddress
+              };
+            }
             
             localStorage.setItem('inf_dao_token', 'mock_token_' + Date.now());
             localStorage.setItem('inf_dao_user', JSON.stringify(registeredUser));
             localStorage.setItem('inf_dao_addr', newUserAddress);
             localStorage.setItem('inf_dao_connected', 'true');
             
-            setSuccessMsg('Registration successful (Sandbox Mode)! Accessing Dashboard...');
+            setSuccessMsg('Registration successful (Sandbox Mode)! Redirecting...');
             setTimeout(() => {
               onAuthSuccess(registeredUser);
             }, 1200);

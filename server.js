@@ -553,9 +553,10 @@ app.post('/api/auth/register', async (req, res) => {
       }
 
       // Check for duplication on walletAddress (if provided)
+      let existingUser = null;
       if (normalizedAddr) {
-        const existingWallet = await User.findOne({ address: normalizedAddr });
-        if (existingWallet) {
+        existingUser = await User.findOne({ address: normalizedAddr });
+        if (existingUser && existingUser.email) {
           return res.status(400).json({ error: 'Wallet address is already registered.' });
         }
       }
@@ -577,18 +578,29 @@ app.post('/api/auth/register', async (req, res) => {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      // Create new user (inherits balances, stakes, etc. from schema defaults)
-      const newUser = new User({
-        email: normalizedEmail,
-        password: hashedPassword,
-        address: finalAddress,
-        walletAddress: finalAddress,
-        fullName: fullName || 'DAO Member',
-        phone: phone || '',
-        sponsorId: sponsorId || ''
-      });
-
-      await newUser.save();
+      let savedUser;
+      if (existingUser) {
+        // Update existing wallet-only placeholder user
+        existingUser.email = normalizedEmail;
+        existingUser.password = hashedPassword;
+        existingUser.walletAddress = finalAddress;
+        existingUser.fullName = fullName || 'DAO Member';
+        existingUser.phone = phone || '';
+        existingUser.sponsorId = sponsorId || '';
+        savedUser = await existingUser.save();
+      } else {
+        // Create new user (inherits balances, stakes, etc. from schema defaults)
+        const newUser = new User({
+          email: normalizedEmail,
+          password: hashedPassword,
+          address: finalAddress,
+          walletAddress: finalAddress,
+          fullName: fullName || 'DAO Member',
+          phone: phone || '',
+          sponsorId: sponsorId || ''
+        });
+        savedUser = await newUser.save();
+      }
 
       // Synchronously write matching metadata to the Signup collection
       try {
@@ -608,12 +620,12 @@ app.post('/api/auth/register', async (req, res) => {
       }
 
       // Create JWT Token
-      const token = jwt.sign({ userId: newUser._id, email: newUser.email }, JWT_SECRET, { expiresIn: '7d' });
+      const token = jwt.sign({ userId: savedUser._id, email: savedUser.email }, JWT_SECRET, { expiresIn: '7d' });
 
       return res.status(201).json({
         success: true,
         token,
-        user: { id: newUser._id, email: newUser.email, walletAddress: newUser.address }
+        user: { id: savedUser._id, email: savedUser.email, walletAddress: savedUser.address }
       });
     } else {
       // Mock Fallback Check for duplication on email
@@ -623,8 +635,12 @@ app.post('/api/auth/register', async (req, res) => {
       }
 
       // Check for duplication on walletAddress (if provided)
-      if (normalizedAddr && mockDb[normalizedAddr]) {
-        return res.status(400).json({ error: 'Wallet address is already registered.' });
+      let existingMockUser = null;
+      if (normalizedAddr) {
+        existingMockUser = mockDb[normalizedAddr];
+        if (existingMockUser && existingMockUser.email) {
+          return res.status(400).json({ error: 'Wallet address is already registered.' });
+        }
       }
 
       // Auto-generate unique placeholder address if not provided
@@ -643,32 +659,45 @@ app.post('/api/auth/register', async (req, res) => {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      const mockUser = {
-        _id: `mock_user_${Date.now()}`,
-        userId: 'USR_' + Math.random().toString(36).substr(2, 9).toUpperCase(),
-        fullName: fullName || 'DAO Member',
-        email: normalizedEmail,
-        password: hashedPassword,
-        phone: phone || '',
-        sponsorId: sponsorId || '',
-        address: finalAddress,
-        walletAddress: finalAddress,
-        balances: {
-          staticIdl: '2500.000',
-          dynamicIdl: '850.000',
-          releasedIdl: '150.000',
-          usdt: '5000.000',
-          gyr: '350.000',
-          stakedIdl: '1200.000',
-        },
-        stakes: [],
-        bonds: [],
-        swaps: [],
-        vestingHistory: [],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      };
-      mockDb[finalAddress] = mockUser;
+      let savedUser;
+      if (existingMockUser) {
+        // Update existing wallet-only placeholder mock user
+        existingMockUser.email = normalizedEmail;
+        existingMockUser.password = hashedPassword;
+        existingMockUser.walletAddress = finalAddress;
+        existingMockUser.fullName = fullName || 'DAO Member';
+        existingMockUser.phone = phone || '';
+        existingMockUser.sponsorId = sponsorId || '';
+        savedUser = existingMockUser;
+      } else {
+        const mockUser = {
+          _id: `mock_user_${Date.now()}`,
+          userId: 'USR_' + Math.random().toString(36).substr(2, 9).toUpperCase(),
+          fullName: fullName || 'DAO Member',
+          email: normalizedEmail,
+          password: hashedPassword,
+          phone: phone || '',
+          sponsorId: sponsorId || '',
+          address: finalAddress,
+          walletAddress: finalAddress,
+          balances: {
+            staticIdl: '2500.000',
+            dynamicIdl: '850.000',
+            releasedIdl: '150.000',
+            usdt: '5000.000',
+            gyr: '350.000',
+            stakedIdl: '1200.000',
+          },
+          stakes: [],
+          bonds: [],
+          swaps: [],
+          vestingHistory: [],
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+        mockDb[finalAddress] = mockUser;
+        savedUser = mockUser;
+      }
 
       // Keep mockSignups synchronized
       mockSignups.push({
@@ -685,12 +714,12 @@ app.post('/api/auth/register', async (req, res) => {
       });
 
       // Create JWT Token
-      const token = jwt.sign({ userId: mockUser._id, email: mockUser.email }, JWT_SECRET, { expiresIn: '7d' });
+      const token = jwt.sign({ userId: savedUser._id, email: savedUser.email }, JWT_SECRET, { expiresIn: '7d' });
 
       return res.status(201).json({
         success: true,
         token,
-        user: { id: mockUser._id, email: mockUser.email, walletAddress: mockUser.address }
+        user: { id: savedUser._id, email: savedUser.email, walletAddress: savedUser.address }
       });
     }
   } catch (err) {
