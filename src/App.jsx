@@ -62,13 +62,13 @@ function App() {
         <Routes>
           <Route path="/" element={<DashboardContent isAuthenticated={isAuthenticated} currentUser={currentUser} setShowAuthModal={setShowAuthModal} handleLogout={handleLogout} />} />
           <Route path="/calculator" element={<Calculator />} />
-          <Route path="/stake" element={isAuthenticated ? <Stake /> : <AuthGate pageName="Staking Portal" setShowAuthModal={setShowAuthModal} />} />
-          <Route path="/bond" element={isAuthenticated ? <Bond /> : <AuthGate pageName="Bonding Center" setShowAuthModal={setShowAuthModal} />} />
-          <Route path="/swap" element={isAuthenticated ? <Swap /> : <AuthGate pageName="Turbo Swap" setShowAuthModal={setShowAuthModal} />} />
-          <Route path="/public-alliance" element={isAuthenticated ? <PublicAlliance /> : <AuthGate pageName="Public Alliance" setShowAuthModal={setShowAuthModal} />} />
-          <Route path="/my-account" element={isAuthenticated ? <MyAccount onLogout={handleLogout} /> : <AuthGate pageName="My Account" setShowAuthModal={setShowAuthModal} />} />
-          <Route path="/aic" element={isAuthenticated ? <AIC /> : <AuthGate pageName="AIC Engine" setShowAuthModal={setShowAuthModal} />} />
-          <Route path="/dao" element={isAuthenticated ? <DAO /> : <AuthGate pageName="DAO Governance" setShowAuthModal={setShowAuthModal} />} />
+          <Route path="/stake" element={<Stake />} />
+          <Route path="/bond" element={<Bond />} />
+          <Route path="/swap" element={<Swap />} />
+          <Route path="/public-alliance" element={<PublicAlliance />} />
+          <Route path="/my-account" element={<MyAccount onLogout={handleLogout} />} />
+          <Route path="/aic" element={<AIC />} />
+          <Route path="/dao" element={<DAO />} />
           <Route path="*" element={<div style={{padding: '2rem'}}>Under Construction</div>} />
         </Routes>
       </div>
