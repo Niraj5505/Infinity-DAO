@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 // Global Sandbox Toggle
 // Set this to true to enable integration with the local Node/Express + MongoDB server on port 5005.
 // Set to false to run purely in a silent local Sandbox mode (eliminating all browser connection errors).
-export const CONNECT_TO_BACKEND_SERVER = false;
+export const CONNECT_TO_BACKEND_SERVER = true;
 
 const Web3Context = createContext();
 
