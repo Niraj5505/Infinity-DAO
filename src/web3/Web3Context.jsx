@@ -6,6 +6,9 @@ import { ethers } from 'ethers';
 // Set to false to run purely in a silent local Sandbox mode (eliminating all browser connection errors).
 export const CONNECT_TO_BACKEND_SERVER = true;
 
+// Production-ready dynamic API Base URL configuration
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5005';
+
 const Web3Context = createContext();
 
 export const useWeb3 = () => useContext(Web3Context);
@@ -63,7 +66,7 @@ export const Web3Provider = ({ children }) => {
       return false;
     }
     try {
-      const res = await fetch('http://localhost:5005/api/db-status');
+      const res = await fetch(`${API_BASE_URL}/api/db-status`);
       if (res.ok) {
         const status = await res.json();
         setDbStatus(status);
@@ -87,7 +90,7 @@ export const Web3Provider = ({ children }) => {
     // 1. Fetch from MongoDB Backend if active
     if (isBackendConnected) {
       try {
-        const response = await fetch(`http://localhost:5005/api/user/${normalizedAddr}`);
+        const response = await fetch(`${API_BASE_URL}/api/user/${normalizedAddr}`);
         if (response.ok) {
           const data = await response.json();
           setBalances(data.balances);
@@ -219,7 +222,7 @@ export const Web3Provider = ({ children }) => {
     // Try posting to MongoDB if connected
     if (dbStatus.connected) {
       try {
-        const response = await fetch(`http://localhost:5005/api/user/${address.toLowerCase()}/action`, {
+        const response = await fetch(`${API_BASE_URL}/api/user/${address.toLowerCase()}/action`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -268,7 +271,7 @@ export const Web3Provider = ({ children }) => {
     // Try posting to MongoDB if connected
     if (dbStatus.connected) {
       try {
-        const response = await fetch(`http://localhost:5005/api/user/${address.toLowerCase()}/action`, {
+        const response = await fetch(`${API_BASE_URL}/api/user/${address.toLowerCase()}/action`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -316,7 +319,7 @@ export const Web3Provider = ({ children }) => {
     // Try posting to MongoDB if connected
     if (dbStatus.connected) {
       try {
-        const response = await fetch(`http://localhost:5005/api/user/${address.toLowerCase()}/action`, {
+        const response = await fetch(`${API_BASE_URL}/api/user/${address.toLowerCase()}/action`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -352,7 +355,7 @@ export const Web3Provider = ({ children }) => {
     // Try posting to MongoDB if connected
     if (dbStatus.connected) {
       try {
-        const response = await fetch(`http://localhost:5005/api/user/${address.toLowerCase()}/action`, {
+        const response = await fetch(`${API_BASE_URL}/api/user/${address.toLowerCase()}/action`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -400,7 +403,7 @@ export const Web3Provider = ({ children }) => {
     // Try posting to MongoDB if connected
     if (dbStatus.connected) {
       try {
-        const response = await fetch(`http://localhost:5005/api/user/${address.toLowerCase()}/action`, {
+        const response = await fetch(`${API_BASE_URL}/api/user/${address.toLowerCase()}/action`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
