@@ -232,7 +232,7 @@ const USDTTokenIcon = () => (
     <g transform="translate(34, 34) scale(0.9)">
       {/* Green/Teal Tether icon inside */}
       <path d="M-10 -9H10V-5H2V5C2 6.5 1 7 0 7C-1 7 -2 6.5 -2 5V-5H-10V-9Z" fill="url(#usdt-green)" />
-      <path d="-12 -4H12V-2H-12V-4Z" fill="url(#usdt-green)" />
+      <path d="M-12 -4H12V-2H-12V-4Z" fill="url(#usdt-green)" />
       {/* White high-gloss line */}
       <path d="M-10 -9H10V-7H-10V-9Z" fill="#ffffff" fillOpacity="0.4" />
     </g>
