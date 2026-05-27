@@ -33,17 +33,21 @@ export const Web3Provider = ({ children }) => {
 
   // Load persistent simulated state on mount
   useEffect(() => {
-    const savedAddress = localStorage.getItem('inf_dao_addr');
-    const savedConnected = localStorage.getItem('inf_dao_connected') === 'true';
-    if (savedConnected && savedAddress) {
-      setIsConnected(true);
-      setAddress(savedAddress);
-      loadBalancesAndSync(savedAddress);
-    }
+    const init = async () => {
+      const isBackendAlive = await fetchDbStatus();
+      const savedAddress = localStorage.getItem('inf_dao_addr');
+      const savedConnected = localStorage.getItem('inf_dao_connected') === 'true';
+      if (savedConnected && savedAddress) {
+        setIsConnected(true);
+        setAddress(savedAddress);
+        await loadBalancesAndSync(savedAddress, isBackendAlive);
+      }
+    };
+
+    init();
     
-    // Fetch live MongoDB connection status
-    fetchDbStatus();
-    const interval = setInterval(fetchDbStatus, 8000);
+    // Fetch live MongoDB connection status with a larger interval to avoid console spam (e.g. 20s)
+    const interval = setInterval(fetchDbStatus, 20000);
     return () => clearInterval(interval);
   }, []);
 
@@ -53,6 +57,7 @@ export const Web3Provider = ({ children }) => {
       if (res.ok) {
         const status = await res.json();
         setDbStatus(status);
+        return status.connected;
       }
     } catch (err) {
       setDbStatus({
@@ -61,26 +66,30 @@ export const Web3Provider = ({ children }) => {
         uri: 'Offline / Port 5005 blocked',
         dbType: 'MongoDB'
       });
+      return false;
     }
+    return false;
   };
 
-  const loadBalancesAndSync = async (userAddr) => {
+  const loadBalancesAndSync = async (userAddr, isBackendConnected = dbStatus.connected) => {
     const normalizedAddr = userAddr.toLowerCase();
     
-    // 1. Fetch from MongoDB Backend
-    try {
-      const response = await fetch(`http://localhost:5005/api/user/${normalizedAddr}`);
-      if (response.ok) {
-        const data = await response.json();
-        setBalances(data.balances);
-        setStakes(data.stakes || []);
-        setBonds(data.bonds || []);
-        setSwaps(data.swaps || []);
-        setVestingHistory(data.vestingHistory || []);
-        return;
+    // 1. Fetch from MongoDB Backend if active
+    if (isBackendConnected) {
+      try {
+        const response = await fetch(`http://localhost:5005/api/user/${normalizedAddr}`);
+        if (response.ok) {
+          const data = await response.json();
+          setBalances(data.balances);
+          setStakes(data.stakes || []);
+          setBonds(data.bonds || []);
+          setSwaps(data.swaps || []);
+          setVestingHistory(data.vestingHistory || []);
+          return;
+        }
+      } catch (err) {
+        console.warn('MongoDB server offline, falling back to browser storage.', err);
       }
-    } catch (err) {
-      console.warn('MongoDB server offline, falling back to browser storage.', err);
     }
 
     // 2. Client fallback
@@ -197,24 +206,26 @@ export const Web3Provider = ({ children }) => {
       return { success: false, error: 'Insufficient Static IDL balance.' };
     }
 
-    // Try posting to MongoDB
-    try {
-      const response = await fetch(`http://localhost:5005/api/user/${address.toLowerCase()}/action`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          actionType: 'STAKE',
-          payload: { amount, duration }
-        })
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setBalances(data.balances);
-        setStakes(data.stakes);
-        return { success: true };
+    // Try posting to MongoDB if connected
+    if (dbStatus.connected) {
+      try {
+        const response = await fetch(`http://localhost:5005/api/user/${address.toLowerCase()}/action`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            actionType: 'STAKE',
+            payload: { amount, duration }
+          })
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setBalances(data.balances);
+          setStakes(data.stakes);
+          return { success: true };
+        }
+      } catch (err) {
+        console.warn('MongoDB action sync failed. Falling back to local simulated state.', err);
       }
-    } catch (err) {
-      console.warn('MongoDB action sync failed. Falling back to local simulated state.', err);
     }
 
     // Local fallback
@@ -244,23 +255,26 @@ export const Web3Provider = ({ children }) => {
       return { success: false, error: 'Insufficient USDT balance.' };
     }
 
-    try {
-      const response = await fetch(`http://localhost:5005/api/user/${address.toLowerCase()}/action`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          actionType: 'BOND',
-          payload: { amount, durationDays, rateRoi }
-        })
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setBalances(data.balances);
-        setBonds(data.bonds);
-        return { success: true };
+    // Try posting to MongoDB if connected
+    if (dbStatus.connected) {
+      try {
+        const response = await fetch(`http://localhost:5005/api/user/${address.toLowerCase()}/action`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            actionType: 'BOND',
+            payload: { amount, durationDays, rateRoi }
+          })
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setBalances(data.balances);
+          setBonds(data.bonds);
+          return { success: true };
+        }
+      } catch (err) {
+        console.warn('MongoDB action sync failed.', err);
       }
-    } catch (err) {
-      console.warn('MongoDB action sync failed.', err);
     }
 
     // Local fallback
@@ -289,22 +303,25 @@ export const Web3Provider = ({ children }) => {
       return { success: false, error: 'Insufficient GYR Balance.' };
     }
 
-    try {
-      const response = await fetch(`http://localhost:5005/api/user/${address.toLowerCase()}/action`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          actionType: 'CLAIM_GYR',
-          payload: { amount }
-        })
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setBalances(data.balances);
-        return { success: true };
+    // Try posting to MongoDB if connected
+    if (dbStatus.connected) {
+      try {
+        const response = await fetch(`http://localhost:5005/api/user/${address.toLowerCase()}/action`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            actionType: 'CLAIM_GYR',
+            payload: { amount }
+          })
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setBalances(data.balances);
+          return { success: true };
+        }
+      } catch (err) {
+        console.warn('MongoDB action sync failed.', err);
       }
-    } catch (err) {
-      console.warn('MongoDB action sync failed.', err);
     }
 
     // Local fallback
@@ -322,23 +339,26 @@ export const Web3Provider = ({ children }) => {
       return { success: false, error: 'Insufficient Released IDL.' };
     }
 
-    try {
-      const response = await fetch(`http://localhost:5005/api/user/${address.toLowerCase()}/action`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          actionType: 'SWAP',
-          payload: { amount }
-        })
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setBalances(data.balances);
-        setSwaps(data.swaps);
-        return { success: true };
+    // Try posting to MongoDB if connected
+    if (dbStatus.connected) {
+      try {
+        const response = await fetch(`http://localhost:5005/api/user/${address.toLowerCase()}/action`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            actionType: 'SWAP',
+            payload: { amount }
+          })
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setBalances(data.balances);
+          setSwaps(data.swaps);
+          return { success: true };
+        }
+      } catch (err) {
+        console.warn('MongoDB action sync failed.', err);
       }
-    } catch (err) {
-      console.warn('MongoDB action sync failed.', err);
     }
 
     // Local fallback
@@ -367,23 +387,26 @@ export const Web3Provider = ({ children }) => {
       return { success: false, error: 'Insufficient Static Balance.' };
     }
 
-    try {
-      const response = await fetch(`http://localhost:5005/api/user/${address.toLowerCase()}/action`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          actionType: 'LINEAR_RELEASE',
-          payload: { amount, periodDays, burnPercent }
-        })
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setBalances(data.balances);
-        setVestingHistory(data.vestingHistory);
-        return { success: true };
+    // Try posting to MongoDB if connected
+    if (dbStatus.connected) {
+      try {
+        const response = await fetch(`http://localhost:5005/api/user/${address.toLowerCase()}/action`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            actionType: 'LINEAR_RELEASE',
+            payload: { amount, periodDays, burnPercent }
+          })
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setBalances(data.balances);
+          setVestingHistory(data.vestingHistory);
+          return { success: true };
+        }
+      } catch (err) {
+        console.warn('MongoDB action sync failed.', err);
       }
-    } catch (err) {
-      console.warn('MongoDB action sync failed.', err);
     }
 
     // Local fallback
