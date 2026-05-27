@@ -165,7 +165,8 @@ const Auth = ({ onAuthSuccess, initialMode = true, isModal = false, onClose }) =
       ? { email, password }
       : { email, password, walletAddress, fullName, phone, sponsorId };
 
-    const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5005';
+    const rawApiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5005';
+    const API_BASE_URL = rawApiUrl.replace(/\/+$/, '');
 
     try {
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {

@@ -6,8 +6,9 @@ import { ethers } from 'ethers';
 // Set to false to run purely in a silent local Sandbox mode (eliminating all browser connection errors).
 export const CONNECT_TO_BACKEND_SERVER = true;
 
-// Production-ready dynamic API Base URL configuration
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5005';
+// Production-ready dynamic API Base URL configuration (normalizes trailing slashes)
+const rawApiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5005';
+const API_BASE_URL = rawApiUrl.replace(/\/+$/, '');
 
 const Web3Context = createContext();
 
