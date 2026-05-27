@@ -1,6 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 
+// Global Sandbox Toggle
+// Set this to true to enable integration with the local Node/Express + MongoDB server on port 5005.
+// Set to false to run purely in a silent local Sandbox mode (eliminating all browser connection errors).
+export const CONNECT_TO_BACKEND_SERVER = false;
+
 const Web3Context = createContext();
 
 export const useWeb3 = () => useContext(Web3Context);
@@ -26,15 +31,15 @@ export const Web3Provider = ({ children }) => {
   // Database status states
   const [dbStatus, setDbStatus] = useState({
     connected: false,
-    mode: 'Checking status...',
-    uri: '',
-    dbType: 'MongoDB'
+    mode: CONNECT_TO_BACKEND_SERVER ? 'Checking status...' : 'Sandbox Mode (Offline)',
+    uri: CONNECT_TO_BACKEND_SERVER ? '' : 'Local Storage Fallback',
+    dbType: CONNECT_TO_BACKEND_SERVER ? 'MongoDB' : 'Client In-Memory'
   });
 
   // Load persistent simulated state on mount
   useEffect(() => {
     const init = async () => {
-      const isBackendAlive = await fetchDbStatus();
+      const isBackendAlive = CONNECT_TO_BACKEND_SERVER ? await fetchDbStatus() : false;
       const savedAddress = localStorage.getItem('inf_dao_addr');
       const savedConnected = localStorage.getItem('inf_dao_connected') === 'true';
       if (savedConnected && savedAddress) {
@@ -46,12 +51,17 @@ export const Web3Provider = ({ children }) => {
 
     init();
     
-    // Fetch live MongoDB connection status with a larger interval to avoid console spam (e.g. 20s)
-    const interval = setInterval(fetchDbStatus, 20000);
-    return () => clearInterval(interval);
+    // Fetch live MongoDB connection status with a larger interval to avoid console spam (e.g. 20s) if enabled
+    if (CONNECT_TO_BACKEND_SERVER) {
+      const interval = setInterval(fetchDbStatus, 20000);
+      return () => clearInterval(interval);
+    }
   }, []);
 
   const fetchDbStatus = async () => {
+    if (!CONNECT_TO_BACKEND_SERVER) {
+      return false;
+    }
     try {
       const res = await fetch('http://localhost:5005/api/db-status');
       if (res.ok) {

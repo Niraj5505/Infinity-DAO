@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Lock, ShieldCheck, UserPlus, LogIn, Sparkles, AlertCircle, User, Phone, Wallet, Gift, X } from 'lucide-react';
 import './Auth.css';
+import { useWeb3 } from '../web3/Web3Context';
 
 const Auth = ({ onAuthSuccess, initialMode = true, isModal = false, onClose }) => {
+  const { dbStatus } = useWeb3();
   const [isLogin, setIsLogin] = useState(initialMode);
 
   useEffect(() => {
@@ -50,6 +52,83 @@ const Auth = ({ onAuthSuccess, initialMode = true, isModal = false, onClose }) =
 
     if (!isLogin && password.length < 6) {
       setErrorMsg('Password must be at least 6 characters.');
+      return;
+    }
+
+    // Local Sandbox Offline Fallback
+    if (!dbStatus.connected) {
+      setLoading(true);
+      setTimeout(() => {
+        try {
+          const mockUsers = JSON.parse(localStorage.getItem('inf_dao_mock_users') || '[]');
+          const normalizedEmail = email.toLowerCase().trim();
+          
+          if (isLogin) {
+            const user = mockUsers.find(u => u.email === normalizedEmail);
+            if (!user || user.password !== password) {
+              throw new Error('Invalid email or password.');
+            }
+            
+            const loginUser = {
+              id: user.id,
+              email: user.email,
+              walletAddress: user.walletAddress
+            };
+            
+            localStorage.setItem('inf_dao_token', 'mock_token_' + Date.now());
+            localStorage.setItem('inf_dao_user', JSON.stringify(loginUser));
+            if (user.walletAddress) {
+              localStorage.setItem('inf_dao_addr', user.walletAddress);
+              localStorage.setItem('inf_dao_connected', 'true');
+            }
+            
+            setSuccessMsg('Login successful (Sandbox Mode)! Redirecting...');
+            setTimeout(() => {
+              onAuthSuccess(loginUser);
+            }, 1200);
+          } else {
+            // Register
+            const exists = mockUsers.some(u => u.email === normalizedEmail);
+            if (exists) {
+              throw new Error('Email is already registered.');
+            }
+            
+            const newUserAddress = walletAddress.trim().toLowerCase() || '0x' + Math.random().toString(16).substring(2, 42);
+            const newUser = {
+              id: 'mock_usr_' + Math.random().toString(36).substring(2, 11).toUpperCase(),
+              email: normalizedEmail,
+              password: password,
+              walletAddress: newUserAddress,
+              fullName: fullName || 'DAO Member',
+              phone: phone || '',
+              sponsorId: sponsorId || ''
+            };
+            
+            mockUsers.push(newUser);
+            localStorage.setItem('inf_dao_mock_users', JSON.stringify(mockUsers));
+            
+            const registeredUser = {
+              id: newUser.id,
+              email: newUser.email,
+              walletAddress: newUser.walletAddress
+            };
+            
+            localStorage.setItem('inf_dao_token', 'mock_token_' + Date.now());
+            localStorage.setItem('inf_dao_user', JSON.stringify(registeredUser));
+            localStorage.setItem('inf_dao_addr', newUserAddress);
+            localStorage.setItem('inf_dao_connected', 'true');
+            
+            setSuccessMsg('Registration successful (Sandbox Mode)! Accessing Dashboard...');
+            setTimeout(() => {
+              onAuthSuccess(registeredUser);
+            }, 1200);
+          }
+        } catch (err) {
+          setErrorMsg(err.message);
+        } finally {
+          setLoading(false);
+        }
+      }, 800);
       return;
     }
 
