@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
-import { Mail, Lock, ShieldCheck, UserPlus, LogIn, Sparkles, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Mail, Lock, ShieldCheck, UserPlus, LogIn, Sparkles, AlertCircle, User, Phone, Wallet, Gift, X } from 'lucide-react';
 import './Auth.css';
 
-const Auth = ({ onAuthSuccess }) => {
-  const [isLogin, setIsLogin] = useState(true);
+const Auth = ({ onAuthSuccess, initialMode = true, isModal = false, onClose }) => {
+  const [isLogin, setIsLogin] = useState(initialMode);
+
+  useEffect(() => {
+    setIsLogin(initialMode);
+  }, [initialMode]);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [walletAddress, setWalletAddress] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [sponsorId, setSponsorId] = useState('');
   
   // Loading and error states
   const [loading, setLoading] = useState(false);
@@ -20,6 +27,10 @@ const Auth = ({ onAuthSuccess }) => {
     setSuccessMsg('');
     setPassword('');
     setConfirmPassword('');
+    setWalletAddress('');
+    setFullName('');
+    setPhone('');
+    setSponsorId('');
   };
 
   const handleSubmit = async (e) => {
@@ -46,7 +57,7 @@ const Auth = ({ onAuthSuccess }) => {
     const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
     const payload = isLogin 
       ? { email, password }
-      : { email, password, walletAddress };
+      : { email, password, walletAddress, fullName, phone, sponsorId };
 
     try {
       const response = await fetch(`http://localhost:5005${endpoint}`, {
@@ -84,16 +95,16 @@ const Auth = ({ onAuthSuccess }) => {
     }
   };
 
-  return (
-    <div className="auth-root-container">
-      {/* Background Animated Orbs */}
-      <div className="bg-orb purple-orb"></div>
-      <div className="bg-orb pink-orb"></div>
-      <div className="bg-orb cyan-orb"></div>
+  const cardContent = (
+    <div className={`auth-card-wrapper animate-up ${isModal ? 'auth-modal-card' : ''} ${!isLogin ? 'auth-card-wide' : ''}`}>
+      {/* Decorative top bar */}
+      <div className="auth-card-accent-bar"></div>
 
-      <div className="auth-card-wrapper animate-up">
-        {/* Decorative top bar */}
-        <div className="auth-card-accent-bar"></div>
+      {isModal && (
+        <button type="button" className="auth-close-btn" onClick={onClose} aria-label="Close">
+          <X size={18} />
+        </button>
+      )}
 
         <div className="auth-brand-logo">
           <svg
@@ -138,61 +149,146 @@ const Auth = ({ onAuthSuccess }) => {
         )}
 
         <form onSubmit={handleSubmit} className="auth-form-layout">
-          <div className="input-group-wrapper">
-            <label className="input-label-small">Email Address</label>
-            <div className="input-icon-box">
-              <Mail className="field-icon" size={18} />
-              <input
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-          </div>
+          {!isLogin ? (
+            <div className="auth-columns-layout animate-up">
+              {/* Left Column */}
+              <div className="auth-form-column">
+                <div className="input-group-wrapper">
+                  <label className="input-label-small">Full Name</label>
+                  <div className="input-icon-box">
+                    <User className="field-icon" size={18} />
+                    <input
+                      type="text"
+                      placeholder="John Doe"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
 
-          <div className="input-group-wrapper">
-            <label className="input-label-small">Password</label>
-            <div className="input-icon-box">
-              <Lock className="field-icon" size={18} />
-              <input
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-          </div>
+                <div className="input-group-wrapper">
+                  <label className="input-label-small">Email Address</label>
+                  <div className="input-icon-box">
+                    <Mail className="field-icon" size={18} />
+                    <input
+                      type="email"
+                      placeholder="you@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
 
-          {!isLogin && (
+                <div className="input-group-wrapper">
+                  <label className="input-label-small">Password</label>
+                  <div className="input-icon-box">
+                    <Lock className="field-icon" size={18} />
+                    <input
+                      type="password"
+                      placeholder="••••••••"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="input-group-wrapper">
+                  <label className="input-label-small">Confirm Password</label>
+                  <div className="input-icon-box">
+                    <Lock className="field-icon" size={18} />
+                    <input
+                      type="password"
+                      placeholder="••••••••"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column */}
+              <div className="auth-form-column">
+                <div className="input-group-wrapper">
+                  <label className="input-label-small">
+                    Phone Number <span className="label-optional">(Optional)</span>
+                  </label>
+                  <div className="input-icon-box">
+                    <Phone className="field-icon" size={18} />
+                    <input
+                      type="tel"
+                      placeholder="+1 (555) 000-0000"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="input-group-wrapper">
+                  <label className="input-label-small">
+                    Decentralized Wallet Address <span className="label-optional">(Optional)</span>
+                  </label>
+                  <div className="input-icon-box">
+                    <Wallet className="field-icon" size={18} />
+                    <input
+                      type="text"
+                      placeholder="0x..."
+                      value={walletAddress}
+                      onChange={(e) => setWalletAddress(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="input-group-wrapper">
+                  <label className="input-label-small">
+                    Sponsor ID / Sponsor Code <span className="label-optional">(Optional)</span>
+                  </label>
+                  <div className="input-icon-box">
+                    <Gift className="field-icon" size={18} />
+                    <input
+                      type="text"
+                      placeholder="e.g., SPONSOR123"
+                      value={sponsorId}
+                      onChange={(e) => setSponsorId(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="auth-helper-badge">
+                  <Sparkles size={14} className="helper-badge-icon" />
+                  <span>Secure Web3 Account Registration</span>
+                </div>
+              </div>
+            </div>
+          ) : (
             <>
-              <div className="input-group-wrapper animate-up">
-                <label className="input-label-small">Confirm Password</label>
+              <div className="input-group-wrapper">
+                <label className="input-label-small">Email Address</label>
                 <div className="input-icon-box">
-                  <Lock className="field-icon" size={18} />
+                  <Mail className="field-icon" size={18} />
                   <input
-                    type="password"
-                    placeholder="••••••••"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    type="email"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </div>
               </div>
 
-              <div className="input-group-wrapper animate-up">
-                <label className="input-label-small">
-                  Decentralized Wallet Address <span className="label-optional">(Optional)</span>
-                </label>
+              <div className="input-group-wrapper">
+                <label className="input-label-small">Password</label>
                 <div className="input-icon-box">
-                  <Sparkles className="field-icon" size={18} />
+                  <Lock className="field-icon" size={18} />
                   <input
-                    type="text"
-                    placeholder="0x..."
-                    value={walletAddress}
-                    onChange={(e) => setWalletAddress(e.target.value)}
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
                   />
                 </div>
               </div>
@@ -221,6 +317,19 @@ const Auth = ({ onAuthSuccess }) => {
           </button>
         </div>
       </div>
+  );
+
+  if (isModal) {
+    return cardContent;
+  }
+
+  return (
+    <div className="auth-root-container">
+      {/* Background Animated Orbs */}
+      <div className="bg-orb purple-orb"></div>
+      <div className="bg-orb pink-orb"></div>
+      <div className="bg-orb cyan-orb"></div>
+      {cardContent}
     </div>
   );
 };

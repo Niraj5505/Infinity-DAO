@@ -11,22 +11,38 @@ import MyAccount from './components/MyAccount';
 import AIC from './components/AIC';
 import DAO from './components/DAO';
 import Auth from './components/Auth';
+import AuthGate from './components/AuthGate';
 import { Menu, X } from 'lucide-react';
 import './App.css';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('inf_dao_token'));
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('inf_dao_user'));
+    } catch {
+      return null;
+    }
+  });
+  const [showAuthModal, setShowAuthModal] = useState(null); // 'login', 'register', or null
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   const handleAuthSuccess = (user) => {
     setIsAuthenticated(true);
+    setCurrentUser(user);
+    setShowAuthModal(null);
   };
 
-  if (!isAuthenticated) {
-    return <Auth onAuthSuccess={handleAuthSuccess} />;
-  }
+  const handleLogout = () => {
+    localStorage.removeItem('inf_dao_token');
+    localStorage.removeItem('inf_dao_user');
+    localStorage.removeItem('inf_dao_addr');
+    localStorage.removeItem('inf_dao_connected');
+    setIsAuthenticated(false);
+    setCurrentUser(null);
+  };
 
   return (
     <div className="app-layout">
@@ -44,18 +60,31 @@ function App() {
       
       <div className={`main-content-wrapper ${isSidebarOpen ? 'sidebar-open' : ''}`} onClick={() => isSidebarOpen && setIsSidebarOpen(false)}>
         <Routes>
-          <Route path="/" element={<DashboardContent />} />
+          <Route path="/" element={<DashboardContent isAuthenticated={isAuthenticated} currentUser={currentUser} setShowAuthModal={setShowAuthModal} handleLogout={handleLogout} />} />
           <Route path="/calculator" element={<Calculator />} />
-          <Route path="/stake" element={<Stake />} />
-          <Route path="/bond" element={<Bond />} />
-          <Route path="/swap" element={<Swap />} />
-          <Route path="/public-alliance" element={<PublicAlliance />} />
-          <Route path="/my-account" element={<MyAccount />} />
-          <Route path="/aic" element={<AIC />} />
-          <Route path="/dao" element={<DAO />} />
+          <Route path="/stake" element={isAuthenticated ? <Stake /> : <AuthGate pageName="Staking Portal" setShowAuthModal={setShowAuthModal} />} />
+          <Route path="/bond" element={isAuthenticated ? <Bond /> : <AuthGate pageName="Bonding Center" setShowAuthModal={setShowAuthModal} />} />
+          <Route path="/swap" element={isAuthenticated ? <Swap /> : <AuthGate pageName="Turbo Swap" setShowAuthModal={setShowAuthModal} />} />
+          <Route path="/public-alliance" element={isAuthenticated ? <PublicAlliance /> : <AuthGate pageName="Public Alliance" setShowAuthModal={setShowAuthModal} />} />
+          <Route path="/my-account" element={isAuthenticated ? <MyAccount onLogout={handleLogout} /> : <AuthGate pageName="My Account" setShowAuthModal={setShowAuthModal} />} />
+          <Route path="/aic" element={isAuthenticated ? <AIC /> : <AuthGate pageName="AIC Engine" setShowAuthModal={setShowAuthModal} />} />
+          <Route path="/dao" element={isAuthenticated ? <DAO /> : <AuthGate pageName="DAO Governance" setShowAuthModal={setShowAuthModal} />} />
           <Route path="*" element={<div style={{padding: '2rem'}}>Under Construction</div>} />
         </Routes>
       </div>
+
+      {showAuthModal && (
+        <div className="modal-overlay" onClick={() => setShowAuthModal(null)}>
+          <div className="modal-content-wrapper" onClick={(e) => e.stopPropagation()}>
+            <Auth 
+              initialMode={showAuthModal === 'register' ? false : true} 
+              onAuthSuccess={handleAuthSuccess} 
+              isModal={true}
+              onClose={() => setShowAuthModal(null)}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -359,7 +359,7 @@ const BalanceItem = ({ icon: Icon, label, value }) => (
 );
 
 /* ── Main Component ───────────────────────────────────────── */
-const MyAccount = () => {
+const MyAccount = ({ onLogout }) => {
   const [showLinearRelease, setShowLinearRelease] = useState(false);
   const [showTurboSwap, setShowTurboSwap] = useState(false);
   
@@ -399,9 +399,13 @@ const MyAccount = () => {
             style={{background: 'rgba(239, 68, 68, 0.1)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.25)'}}
             onClick={() => {
               if (window.confirm('Are you sure you want to log out?')) {
-                localStorage.removeItem('inf_dao_token');
-                localStorage.removeItem('inf_dao_user');
-                window.location.reload();
+                if (onLogout) {
+                  onLogout();
+                } else {
+                  localStorage.removeItem('inf_dao_token');
+                  localStorage.removeItem('inf_dao_user');
+                  window.location.reload();
+                }
               }
             }}
           >

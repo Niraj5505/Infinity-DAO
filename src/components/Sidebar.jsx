@@ -1,28 +1,28 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Calculator, 
-  Layers, 
-  Shield, 
-  ArrowLeftRight, 
-  Users, 
-  UserCircle, 
+import {
+  LayoutDashboard,
+  Calculator,
+  Layers,
+  Shield,
+  ArrowLeftRight,
+  Users,
+  UserCircle,
   Cpu,
   Gavel
 } from 'lucide-react';
 import './Sidebar.css';
 
 const XIcon = ({ size = 20, className = "" }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="1.5" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     className={className}
   >
     <path d="M4 4l16 16" />
@@ -31,15 +31,15 @@ const XIcon = ({ size = 20, className = "" }) => (
 );
 
 const InstagramIcon = ({ size = 20, className = "" }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="1.5" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     className={className}
   >
     <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
@@ -49,15 +49,15 @@ const InstagramIcon = ({ size = 20, className = "" }) => (
 );
 
 const TelegramIcon = ({ size = 20, className = "" }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="1.5" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     className={className}
   >
     <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -95,39 +95,39 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       </div>
 
       <nav className="sidebar-nav">
-        <NavLink to="/" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()} end>
+        <NavLink to="/" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()} end>
           <LayoutDashboard size={20} className="nav-icon" />
           <span>Dashboard</span>
         </NavLink>
-        <NavLink to="/calculator" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
+        <NavLink to="/calculator" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
           <Calculator size={20} className="nav-icon" />
           <span>Calculator</span>
         </NavLink>
-        <NavLink to="/stake" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
+        <NavLink to="/stake" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
           <Layers size={20} className="nav-icon" />
           <span>Stake</span>
         </NavLink>
-        <NavLink to="/bond" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
+        <NavLink to="/bond" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
           <Shield size={20} className="nav-icon" />
           <span>Bond</span>
         </NavLink>
-        <NavLink to="/swap" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
+        <NavLink to="/swap" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
           <ArrowLeftRight size={20} className="nav-icon" />
           <span>Swap</span>
         </NavLink>
-        <NavLink to="/public-alliance" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
+        <NavLink to="/public-alliance" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
           <Users size={20} className="nav-icon" />
           <span>Public Alliance</span>
         </NavLink>
-        <NavLink to="/my-account" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
+        <NavLink to="/my-account" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
           <UserCircle size={20} className="nav-icon" />
           <span>My Account</span>
         </NavLink>
-        <NavLink to="/aic" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
+        <NavLink to="/aic" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
           <Cpu size={20} className="nav-icon" />
           <span>AIC</span>
         </NavLink>
-        <NavLink to="/dao" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
+        <NavLink to="/dao" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={() => window.innerWidth <= 992 && toggleSidebar()}>
           <Gavel size={20} className="nav-icon" />
           <span>DAO</span>
         </NavLink>

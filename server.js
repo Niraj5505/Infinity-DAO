@@ -227,6 +227,9 @@ const SignupSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true, index: true, lowercase: true, trim: true },
   address: { type: String, default: '', lowercase: true, trim: true },
   referredBy: { type: String, default: '', lowercase: true, trim: true },
+  fullName: { type: String, default: '' },
+  phone: { type: String, default: '' },
+  password: { type: String, default: '' },
   status: { type: String, default: 'active' }
 }, { collection: 'Signup', timestamps: true });
 
@@ -587,6 +590,23 @@ app.post('/api/auth/register', async (req, res) => {
 
       await newUser.save();
 
+      // Synchronously write matching metadata to the Signup collection
+      try {
+        const newSignup = new Signup({
+          email: normalizedEmail,
+          address: finalAddress,
+          referredBy: sponsorId || '',
+          fullName: fullName || '',
+          phone: phone || '',
+          password: hashedPassword,
+          status: 'active'
+        });
+        await newSignup.save();
+        console.log(`✅ Signup collection synchronized successfully for: ${normalizedEmail}`);
+      } catch (signupErr) {
+        console.warn('⚠️ Signup collection synchronization warning:', signupErr.message);
+      }
+
       // Create JWT Token
       const token = jwt.sign({ userId: newUser._id, email: newUser.email }, JWT_SECRET, { expiresIn: '7d' });
 
@@ -649,6 +669,20 @@ app.post('/api/auth/register', async (req, res) => {
         updatedAt: new Date().toISOString()
       };
       mockDb[finalAddress] = mockUser;
+
+      // Keep mockSignups synchronized
+      mockSignups.push({
+        _id: `mock_${Date.now()}`,
+        email: normalizedEmail,
+        address: finalAddress,
+        referredBy: sponsorId || '',
+        fullName: fullName || '',
+        phone: phone || '',
+        password: hashedPassword,
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      });
 
       // Create JWT Token
       const token = jwt.sign({ userId: mockUser._id, email: mockUser.email }, JWT_SECRET, { expiresIn: '7d' });
